@@ -118,9 +118,9 @@ earndat$inctot_sp[earndat$inctot_sp >= 9999999] <- 0
 earndat <- earndat %>%
   mutate(
     nonneg = case_when(
-      (inctot + inctot_sp) >=0 ~ 1L,
-      inctot               >=0 ~ 1L,
-      TRUE                     ~ 0L ))
+      (inctot + inctot_sp) >=0 ~ 1,
+      inctot               >=0 ~ 1,
+      TRUE                     ~ 0))
 
 earndat <- earndat %>%
   filter(nonneg == 1)
@@ -148,7 +148,7 @@ earnavg$Var1 <- as.numeric(earnavg$Var1)
 
 ## Figure
 fig <- earnavg %>%
-  filter(Var2 != "NotFBW") %>%
+  filter(Var2 != "NotFBW" & (Var1<= 2000 | Var1 == 2010 | Var1==2017)) %>%
   ggplot((aes(x = Var1,  y = percentage, fill = Var2))) +
   geom_area(color = "black") +
   geom_line(position="stack", linetype="dashed", size = 1.2,  color = c("white")) +
@@ -158,7 +158,7 @@ fig <- earnavg %>%
                     breaks=c("MarFBW", "SoloFBW"),
                     labels=c("Married-couple families",
                              "Mother-only families"),
-                    values=c("#8B8378", "#36648B")) +
+                    values=c("#666767", "#CA5462")) +
   labs(title = "Mothers as primary or sole earners, 1960-2017",
           subtitle = "Percent of households with children under age 18 \nin which mothers are the primary or sole earner") +
   labs(caption = "Data source: 1960-2000 Decennial Census \n2010-2017 American Community Surveys") +
